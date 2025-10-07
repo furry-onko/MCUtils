@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import curses as c
 import curses.textpad as ct
 import os
@@ -439,6 +441,9 @@ def craftingShaped (
 
 		stdscr.refresh()
 
+def craftingShapeless(stdscr, start_x: int, start_y: int) -> None:
+	...
+
 def menu(stdscr) -> None:
 	c.start_color()
 	c.init_pair(1, c.COLOR_WHITE, c.COLOR_BLACK)
@@ -488,7 +493,17 @@ def menu(stdscr) -> None:
 			mode = craftingOptions[sel_craftingOptions]
 			in_select_menu = False
 
-	if mode == "Crafting": craftingShaped(stdscr, start_x, start_y)
+	if mode == "Crafting":
+		crafting_selection_interaction: str = Visuals.optionBox(start_x, start_y, "Select crafting type", "Shaped", "Shapeless", "Back")
+		if crafting_selection_interaction == "Shaped":
+			craftingShaped(stdscr, start_x, start_y)
+		elif crafting_selection_interaction == "Shapeless":
+			craftingShapeless(stdscr, start_x, start_y)
+		else:
+			main()
+
+	else:
+		exit(0)
 
 def main() -> None:
 	c.wrapper(menu)
